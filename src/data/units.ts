@@ -42,7 +42,7 @@ export const units: Unit[] = [
   },
   {
     id: 2,
-    title: "Adventure & Discovery",
+    title: "Unit 2",
     description: "Adventure, approach, carefully, chemical & more",
     words: [
       { english: "adventure", uzbek: "sarguzasht", answers: ["qo'zg'alish", "sayohat"], sentence: "Riding in the rough water was an ___." },
@@ -150,7 +150,7 @@ export const units: Unit[] = [
   },
   {
     id: 6,
-    title: "Relationships & Events",
+    title: "Unit 6",
     description: "Advantage, cause, choice, community, dead & more",
     words: [
       { english: "advantage", uzbek: "afzallik", answers: ["foyda", "ustun tomon", "narvayi"], sentence: "Having a car gives you an ___ over people without one." },
@@ -174,7 +174,7 @@ export const units: Unit[] = [
   },
   {
     id: 7,
-    title: "Changes & Actions",
+    title: "Unit 7",
     description: "Allow, announce, beside, challenge, claim & more",
     words: [
       { english: "allow", uzbek: "ruxsat bermoq", answers: ["ruxsat etmoq", "ijozat bermoq", "imkon bermoq"], sentence: "The teacher did not ___ talking during the test." },
@@ -201,7 +201,7 @@ export const units: Unit[] = [
   },
   {
     id: 8,
-    title: "Understanding & Cognition",
+    title: "Unit 8",
     description: "Accept, arrange, attend, balance, contrast & more",
     words: [
       { english: "accept", uzbek: "qabul qilmoq", answers: ["qabul etmoq", "rozi bo'lmoq", "olmoq"], sentence: "She decided to ___ the job offer." },
@@ -228,7 +228,7 @@ export const units: Unit[] = [
   },
   {
     id: 9,
-    title: "Experience & Interaction",
+    title: "Unit 9",
     description: "Against, beach, damage, discover, emotion & more",
     words: [
       { english: "against", uzbek: "qarshi", answers: ["zid", "aksincha", "ko'ra"], sentence: "She voted ___ the new school rule." },
@@ -255,7 +255,7 @@ export const units: Unit[] = [
   },
   {
     id: 10,
-    title: "Achievement & Purpose",
+    title: "Unit 10",
     description: "Benefit, certain, chance, effect, essential & more",
     words: [
       { english: "benefit", uzbek: "foyda", answers: ["manfaat", "yordam", "qulaylik"], sentence: "Exercise has many ___s for your health." },

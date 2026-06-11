@@ -1,6 +1,7 @@
 export interface Word {
   id: string;
   english: string;
+  alternatives: string[];
   uzbek: string;
   transcription: string;
   exampleEn: string;
@@ -14,7 +15,12 @@ export interface Unit {
   words: Word[];
 }
 
-export const units: Unit[] = [
+import { allUnits } from './units/index';
+
+export const units: Unit[] = allUnits as Unit[];
+
+// Legacy export for backward compatibility
+export const unitsLegacy: Unit[] = [
   {
     id: 1,
     title: "Greetings & Basics",

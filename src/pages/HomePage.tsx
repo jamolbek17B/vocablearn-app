@@ -27,12 +27,39 @@ export default function HomePage({ stats }: HomePageProps) {
 
   return (
     <>
-      <div className="header">
-        <div className="header-content">
-          <div className="header-logo">📚 VocabLearn</div>
-          <div className="header-user">
-            <span style={{ color: 'var(--text-muted)' }}>Welcome, {stats.userName || 'Learner'}!</span>
-            <div className="user-avatar">{stats.userName?.charAt(0) || 'L'}</div>
+      <div style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '20px',
+        marginBottom: '30px',
+        borderRadius: '0 0 24px 24px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <div style={{ fontSize: '1.3rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            📚 <span>VocabLearn</span>
+          </div>
+          <div style={{ textAlign: 'center', color: 'white' }}>
+            <div style={{ fontSize: '0.85rem', opacity: 0.9 }}>Welcome, Learner!</div>
+          </div>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontWeight: 700,
+            fontSize: '0.95rem'
+          }}>
+            {stats.userName?.charAt(0)?.toUpperCase() || 'L'}
           </div>
         </div>
       </div>
@@ -40,23 +67,45 @@ export default function HomePage({ stats }: HomePageProps) {
       <div className="container">
         <div className="page-header">
           <h1 className="page-greeting">
-            Good to see you! 👋
+            Keep it up, {stats.userName || 'Learner'}! 👋
           </h1>
           <p className="page-subtitle">
-            {units.length} units • {units.reduce((sum, u) => sum + u.words.length, 0)} words
+            {units.length} units • {units.reduce((sum, u) => sum + u.words.length, 0)} words • 70 activities
           </p>
         </div>
 
-        <div className="stats-container">
-          <div className="stats-label">Overall Progress</div>
-          <div style={{ marginBottom: '20px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            {Math.min(stats.dailyXPEarned, stats.dailyGoal)} / {stats.dailyGoal} activities
+        <div style={{
+          background: 'white',
+          borderRadius: '16px',
+          padding: '24px',
+          marginBottom: '24px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '16px'
+          }}>
+            <div style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: 'var(--text-muted)'
+            }}>
+              Overall Progress
+            </div>
+            <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 700 }}>
+              {Math.min(stats.dailyXPEarned, stats.dailyGoal)} / {stats.dailyGoal} activities
+            </div>
           </div>
           <div className="progress-bar">
             <div
               className="progress-fill"
               style={{
-                width: `${Math.min((stats.dailyXPEarned / stats.dailyGoal) * 100, 100)}%`
+                width: `${Math.min((stats.dailyXPEarned / stats.dailyGoal) * 100, 100)}%`,
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
               }}
             ></div>
           </div>

@@ -10,6 +10,7 @@ export interface WordProgress {
 }
 
 export interface UserStats {
+  userName?: string;
   totalXP: number;
   level: number;
   streak: number;
@@ -30,6 +31,7 @@ const STORAGE_KEYS = {
   PROGRESS: 'vocablearn_progress',
   STATS: 'vocablearn_stats',
   SESSIONS: 'vocablearn_sessions',
+  USERNAME: 'vocablearn_username',
 };
 
 // SM-2 Algorithm Implementation
@@ -198,4 +200,34 @@ export function getXPForScore(score: number, maxScore: number): number {
   // Score as percentage determines XP earned (10-100)
   const percentage = Math.min(100, Math.floor((score / maxScore) * 100));
   return Math.max(10, Math.floor(percentage * 0.8)); // 0-100 score = 0-80 XP
+}
+
+export function setUserName(name: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS.USERNAME, name);
+    const stats = getUserStats();
+    stats.userName = name;
+    saveUserStats(stats);
+  } catch (error) {
+    console.error('Failed to save username:', error);
+  }
+}
+
+export function getUserName(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.USERNAME);
+  } catch {
+    return null;
+  }
+}
+
+// Validate answer against word alternatives
+export function validateAnswer(userAnswer: string, correctAnswer: string, alternatives: string[]): boolean {
+  const normalized = (str: string) => str.toLowerCase().trim();
+  const userNorm = normalized(userAnswer);
+  const correctNorm = normalized(correctAnswer);
+  
+  if (userNorm === correctNorm) return true;
+  if (alternatives && alternatives.some(alt => normalized(alt) === userNorm)) return true;
+  return false;
 }

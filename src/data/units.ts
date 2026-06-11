@@ -69,7 +69,7 @@ export const units: Unit[] = [
   },
   {
     id: 3,
-    title: "Description & Understanding",
+    title: "Unit 3",
     description: "Alien, among, chart, cloud, comprehend & more",
     words: [
       { english: "alien", uzbek: "begona", answers: ["chet ellik", "g'ayrioddiy", "o'zga sayyoralik"], sentence: "The ___ came in peace." },
@@ -96,7 +96,7 @@ export const units: Unit[] = [
   },
   {
     id: 4,
-    title: "Behavior & Verbs",
+    title: "Unit 4",
     description: "Appropriate, avoid, calm, behave, concern & more",
     words: [
       { english: "appropriate", uzbek: "muvofiq", answers: ["mos", "to'g'ri", "o'rinli"], sentence: "It's ___ to wear a suit when you go to the office." },

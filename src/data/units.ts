@@ -96,7 +96,7 @@ export const units: Unit[] = [
   },
   {
     id: 4,
-    title: "Behavior & Verbs",
+    title: "Unit 4",
     description: "Appropriate, avoid, calm, behave, concern & more",
     words: [
       { english: "appropriate", uzbek: "muvofiq", answers: ["mos", "to'g'ri", "o'rinli"], sentence: "It's ___ to wear a suit when you go to the office." },
@@ -123,7 +123,7 @@ export const units: Unit[] = [
   },
   {
     id: 5,
-    title: "Qualities & States",
+    title: "Unit 5",
     description: "Aware, badly, belong, continue, error & more",
     words: [
       { english: "aware", uzbek: "xabardor", answers: ["bilimdon", "ogoh", "xabari bor"], sentence: "Are you ___ of the changes that were made?" },

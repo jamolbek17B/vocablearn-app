@@ -15,7 +15,7 @@ export interface Unit {
 export const units: Unit[] = [
   {
     id: 1,
-    title: "Emotions & Attitudes",
+    title: "Unit 1",
     description: "Afraid, agree, angry, arrive, attack & more",
     words: [
       { english: "afraid", uzbek: "qo'rqmoq", answers: ["qo'rqqan", "cho'chmoq", "qo'rqib ketmoq"], sentence: "The woman was ___ of what she saw." },

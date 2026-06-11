@@ -231,3 +231,38 @@ export function validateAnswer(userAnswer: string, correctAnswer: string, altern
   if (alternatives && alternatives.some(alt => normalized(alt) === userNorm)) return true;
   return false;
 }
+
+// Get number of completed exercises for a unit (0-7)
+export function getUnitCompletedExercises(unitId: number): number {
+  try {
+    const progressStr = localStorage.getItem(STORAGE_KEYS.PROGRESS);
+    if (!progressStr) return 0;
+    
+    const progress = JSON.parse(progressStr) as Record<string, WordProgress>;
+    const unitProgress = progress[`unit-${unitId}-progress`] as { completedExercises?: number } | undefined;
+    
+    return unitProgress?.completedExercises || 0;
+  } catch {
+    return 0;
+  }
+}
+
+// Mark exercise as completed for a unit
+export function markExerciseCompleted(unitId: number): void {
+  try {
+    const progressStr = localStorage.getItem(STORAGE_KEYS.PROGRESS);
+    const progress: Record<string, unknown> = progressStr ? JSON.parse(progressStr) : {};
+    
+    const key = `unit-${unitId}-progress`;
+    const current = (progress[key] as { completedExercises?: number } | undefined)?.completedExercises || 0;
+    
+    progress[key] = {
+      ...progress[key],
+      completedExercises: Math.min(current + 1, 7)
+    };
+    
+    localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progress));
+  } catch (error) {
+    console.error('Failed to mark exercise completed:', error);
+  }
+}

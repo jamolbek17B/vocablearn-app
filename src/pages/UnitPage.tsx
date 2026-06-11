@@ -71,60 +71,70 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
   return (
     <>
       <div className="header">
-        <button className="back-button" onClick={() => navigate('/')}>
-          ← Back to Units
-        </button>
-        <div className="logo">
-          📚 {unit.title}
+        <div className="header-content">
+          <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem' }} onClick={() => navigate('/')}>
+            ← Back
+          </button>
+          <div className="header-logo">Unit {unit.id}: {unit.title}</div>
+          <div style={{ width: '80px' }}></div>
         </div>
-        <div style={{ width: '150px' }}></div>
       </div>
 
-      <div className="container-main">
-        <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '0.5rem' }}>
+      <div className="container">
+        <div className="page-header">
+          <h1 className="page-greeting">
             {unit.title}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.1rem', marginBottom: '1rem' }}>
-            {unit.description}
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.8)' }}>
-            Choose a game mode to practice
+          <p className="page-subtitle">
+            {unit.description} • {unit.words.length} words
           </p>
         </div>
 
-        <div className="game-modes">
+        <div className="progress-section">
+          <div className="progress-header">
+            <div>
+              <div className="stats-label">Choose a Game Mode</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="games-grid">
           {GAME_MODES.map((mode) => (
-            <button
+            <div
               key={mode.id}
-              className="game-mode-btn"
+              className="game-card"
               onClick={() => navigate(`/game/${unitId}/${mode.id}`)}
-              style={{
-                borderTop: `4px solid ${mode.color}`
-              }}
+              style={{ cursor: 'pointer' }}
             >
-              <div className="game-mode-icon">{mode.icon}</div>
-              <div className="game-mode-name">{mode.name}</div>
-              <div className="game-mode-desc">{mode.description}</div>
-            </button>
+              <div className="game-icon">{mode.icon}</div>
+              <h3 className="game-title">{mode.name}</h3>
+              <p className="game-description">{mode.description}</p>
+              <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--bg-slate)' }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>
+                  Start Game →
+                </span>
+              </div>
+            </div>
           ))}
         </div>
 
         <div style={{ marginTop: '3rem' }}>
-          <h2 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.5rem' }}>
-            Unit Words ({unit.words.length})
-          </h2>
-          <div className="words-grid">
+          <div className="progress-section">
+            <div className="progress-header">
+              <div>
+                <div className="stats-label">Vocabulary ({unit.words.length} words)</div>
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '12px', marginTop: '20px' }}>
             {unit.words.map((word) => (
               <div key={word.id} className="word-card">
                 <div className="word-english">{word.english}</div>
                 <div className="word-uzbek">{word.uzbek}</div>
-                <div className="word-transcription">{word.transcription}</div>
+                <div className="word-phonetic">{word.transcription}</div>
                 <div className="word-example">
-                  <strong>Example:</strong>
-                  <div style={{ marginTop: '0.25rem', fontSize: '0.85rem' }}>
-                    "{word.exampleEn}"
-                  </div>
+                  <div className="example-en"><strong>Example:</strong> "{word.exampleEn}"</div>
+                  <div className="example-uz"><em>"{word.exampleUz}"</em></div>
                 </div>
               </div>
             ))}

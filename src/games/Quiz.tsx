@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Unit } from '../data/vocabulary'
-import { validateAnswer } from '../utils/storage'
+import { isAnswerCorrect } from '../utils/answerCheck'
 
 interface QuizProps {
   unit: Unit
@@ -23,15 +23,15 @@ export default function Quiz({
   const currentWord = words[currentIndex]
 
   const handleSubmit = () => {
-    const isAnswerCorrect = validateAnswer(userAnswer, currentWord.uzbek, currentWord.alternatives || [])
-    setIsCorrect(isAnswerCorrect)
+    const correct = isAnswerCorrect(userAnswer, currentWord)
+    setIsCorrect(correct)
     setAnswered(true)
 
-    if (isAnswerCorrect) {
+    if (correct) {
       setScore(score + 1)
-      onWordResult(currentWord.id, 5)
+      onWordResult(currentWord.english, 5)
     } else {
-      onWordResult(currentWord.id, 2)
+      onWordResult(currentWord.english, 2)
     }
   }
 

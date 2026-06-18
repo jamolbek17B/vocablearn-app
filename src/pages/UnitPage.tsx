@@ -127,14 +127,12 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '12px', marginTop: '20px' }}>
-            {unit.words.map((word) => (
-              <div key={word.id} className="word-card">
+            {unit.words.map((word, idx) => (
+              <div key={`${word.english}-${idx}`} className="word-card">
                 <div className="word-english">{word.english}</div>
                 <div className="word-uzbek">{word.uzbek}</div>
-                <div className="word-phonetic">{word.transcription}</div>
                 <div className="word-example">
-                  <div className="example-en"><strong>Example:</strong> "{word.exampleEn}"</div>
-                  <div className="example-uz"><em>"{word.exampleUz}"</em></div>
+                  <div className="example-en"><strong>Example:</strong> "{word.sentence}"</div>
                 </div>
               </div>
             ))}

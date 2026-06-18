@@ -26,15 +26,15 @@ export default function MatchPairs({
     const cards: Card[] = []
     selectedWords.forEach((word) => {
       cards.push({
-        id: `en-${word.id}`,
+        id: `en-${word.english}`,
         text: word.english,
-        pairId: word.id,
+        pairId: word.english,
         type: 'english'
       })
       cards.push({
-        id: `uz-${word.id}`,
+        id: `uz-${word.english}`,
         text: word.uzbek,
-        pairId: word.id,
+        pairId: word.english,
         type: 'uzbek'
       })
     })

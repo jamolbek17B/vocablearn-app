@@ -25,7 +25,7 @@ export default function FillBlanks({
     return text.toLowerCase().trim().replace(/[^\w\s]/g, '')
   }
 
-  const example = currentWord.exampleEn
+  const example = currentWord.sentence
   const blankExample = example.replace(
     new RegExp(`\\b${currentWord.english}\\b`, 'gi'),
     '_____'
@@ -38,9 +38,9 @@ export default function FillBlanks({
 
     if (isAnswerCorrect) {
       setScore(score + 1)
-      onWordResult(currentWord.id, 5)
+      onWordResult(currentWord.english, 5)
     } else {
-      onWordResult(currentWord.id, 2)
+      onWordResult(currentWord.english, 2)
     }
   }
 

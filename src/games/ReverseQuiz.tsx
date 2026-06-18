@@ -32,9 +32,9 @@ export default function ReverseQuiz({
 
     if (isAnswerCorrect) {
       setScore(score + 1)
-      onWordResult(currentWord.id, 5)
+      onWordResult(currentWord.english, 5)
     } else {
-      onWordResult(currentWord.id, 2)
+      onWordResult(currentWord.english, 2)
     }
   }
 

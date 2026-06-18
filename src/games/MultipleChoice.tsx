@@ -24,7 +24,7 @@ export default function MultipleChoice({
   // Generate options: correct answer + 3 random wrong ones
   const generateOptions = () => {
     const options = [currentWord.uzbek]
-    const otherWords = words.filter(w => w.id !== currentWord.id)
+    const otherWords = words.filter(w => w.english !== currentWord.english)
     
     while (options.length < 4 && otherWords.length > 0) {
       const randomIdx = Math.floor(Math.random() * otherWords.length)
@@ -45,9 +45,9 @@ export default function MultipleChoice({
 
     if (correct) {
       setScore(score + 1)
-      onWordResult(currentWord.id, 5) // Excellent
+      onWordResult(currentWord.english, 5) // Excellent
     } else {
-      onWordResult(currentWord.id, 2) // Poor
+      onWordResult(currentWord.english, 2) // Poor
     }
   }
 

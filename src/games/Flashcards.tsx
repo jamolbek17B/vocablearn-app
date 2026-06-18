@@ -20,13 +20,13 @@ export default function Flashcards({
   const currentWord = words[currentIndex]
 
   const handleKnow = () => {
-    onWordResult(currentWord.id, 4) // Good quality
+    onWordResult(currentWord.english, 4) // Good quality
     setScore(score + 1)
     moveToNext()
   }
 
   const handleDontKnow = () => {
-    onWordResult(currentWord.id, 1) // Poor quality
+    onWordResult(currentWord.english, 1) // Poor quality
     moveToNext()
   }
 

@@ -174,10 +174,12 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
         <div
           style={{
             background: 'white',
-            borderRadius: '16px',
+            borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '4px solid #667eea'
+            borderLeft: '1px solid #667eea',
+            textAlign: 'center',
+            marginBottom: '12px'
           }}
         >
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -191,10 +193,10 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
         <div
           style={{
             background: 'white',
-            borderRadius: '16px',
+            borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '4px solid #f59e0b'
+            borderLeft: '1px solid #f59e0b'
           }}
         >
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>

@@ -71,7 +71,7 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
   return (
     <>
       <div className="header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', width: '100%' }}>
           <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem', flexShrink: 0 }} onClick={() => navigate('/')}>
             ← Back
           </button>

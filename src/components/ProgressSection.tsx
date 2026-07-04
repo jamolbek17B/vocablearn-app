@@ -169,7 +169,7 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
         </div>
       </div>
 
-      {/* Recommendations */}
+      {/* Recommendations - Equally spaced cards */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
         <div
           style={{
@@ -177,12 +177,15 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '1px solid #667eea',
+            borderLeft: '2px solid #667eea',
             textAlign: 'center',
-            marginBottom: '12px'
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '100px'
           }}
         >
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             📝 Spaced Repetition
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
@@ -196,10 +199,15 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '1px solid #f59e0b'
+            borderLeft: '2px solid #f59e0b',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '100px'
           }}
         >
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             ⚠️ Weak Words
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>

@@ -9,6 +9,21 @@ interface HomePageProps {
   setStats: (stats: UserStats) => void
 }
 
+/**
+ * TOTAL_EXERCISES represents the number of different game modes available per unit:
+ * 1. Flashcards - Flip cards to learn
+ * 2. Multiple Choice - Pick the right answer
+ * 3. Quiz - Type the translation
+ * 4. Reverse Quiz - Uzbek to English
+ * 5. Fill Blanks - Complete the sentence
+ * 6. Listening - Hear and translate
+ * 7. Match Pairs - Connect words
+ * 
+ * Total activities calculation:
+ * Activities = TOTAL_EXERCISES × units.length
+ * With 20 units: 7 × 20 = 140 activities
+ * This ensures users have diverse learning methods for each unit
+ */
 const TOTAL_EXERCISES = 7;
 
 export default function HomePage({ stats }: HomePageProps) {

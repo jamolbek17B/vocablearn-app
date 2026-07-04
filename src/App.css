@@ -25,6 +25,24 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.header-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  flex: 1;
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 700;

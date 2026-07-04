@@ -17,7 +17,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'rgb(240, 244, 255)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

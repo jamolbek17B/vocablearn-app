@@ -87,7 +87,11 @@ export default function HomePage({ stats }: HomePageProps) {
 
         {/* Progress Section */}
         <div style={{ marginBottom: '40px' }}>
-          <ProgressSection stats={stats} totalActivities={TOTAL_EXERCISES * units.length} />
+          <ProgressSection 
+            stats={stats} 
+            totalActivities={TOTAL_EXERCISES * units.length}
+            allWords={units.flatMap(u => u.words)}
+          />
         </div>
 
         {/* Units Grid */}

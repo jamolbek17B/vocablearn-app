@@ -1,23 +1,21 @@
-import type { UserStats } from '../utils/storage';
+import type { UserStats, Word } from '../utils/storage';
+import { getLast7DaysActivity, getWordsForSpacedRepetition, getWeakWords } from '../utils/storage';
 
 interface ProgressSectionProps {
   stats: UserStats;
   totalActivities: number;
+  allWords?: Array<{ english: string }>;
 }
 
-export default function ProgressSection({ stats, totalActivities }: ProgressSectionProps) {
+export default function ProgressSection({ stats, totalActivities, allWords = [] }: ProgressSectionProps) {
   const progressPercent = Math.min((stats.dailyXPEarned / stats.dailyGoal) * 100, 100);
 
-  // Generate last 7 days activity
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (6 - i));
-    return {
-      day: ['Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th'][date.getDay()],
-      date: date.toISOString().split('T')[0],
-      activity: Math.random() > 0.6 ? Math.floor(Math.random() * 100) : 0
-    };
-  });
+  // Get real last 7 days activity with actual streak tracking
+  const last7Days = getLast7DaysActivity();
+  
+  // Calculate weak words and spaced repetition words
+  const weakWords = getWeakWords(allWords);
+  const spacedRepWords = getWordsForSpacedRepetition(allWords);
 
   return (
     <div>
@@ -155,11 +153,16 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
               <div
                 style={{
                   height: '48px',
-                  background: day.activity > 0 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0',
+                  background: day.active 
+                    ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' 
+                    : '#e2e8f0',
                   borderRadius: '8px',
                   marginBottom: '8px',
-                  opacity: day.activity > 0 ? 1 : 0.5
+                  opacity: day.active ? 1 : 0.5,
+                  transition: 'all 0.3s ease',
+                  boxShadow: day.active ? '0 2px 8px rgba(16, 185, 129, 0.3)' : 'none'
                 }}
+                title={`${day.date}: ${day.active ? 'Active' : 'No activity'}`}
               ></div>
               <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
                 {day.day}
@@ -182,14 +185,15 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '100px'
+            minHeight: '100px',
+            cursor: spacedRepWords.length > 0 ? 'pointer' : 'default'
           }}
         >
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             📝 Spaced Repetition
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-            Review words due today
+            {spacedRepWords.length > 0 ? `${spacedRepWords.length} word${spacedRepWords.length !== 1 ? 's' : ''} due today` : 'All caught up!'}
           </div>
         </div>
 
@@ -204,14 +208,15 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '100px'
+            minHeight: '100px',
+            cursor: weakWords.length > 0 ? 'pointer' : 'default'
           }}
         >
           <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             ⚠️ Weak Words
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-            Practice your hardest words
+            {weakWords.length > 0 ? `${weakWords.length} word${weakWords.length !== 1 ? 's' : ''} need practice` : 'No weak words!'}
           </div>
         </div>
       </div>

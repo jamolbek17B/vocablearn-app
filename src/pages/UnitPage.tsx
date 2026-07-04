@@ -75,7 +75,7 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
           <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem' }} onClick={() => navigate('/')}>
             ← Back
           </button>
-          <div className="header-logo">Unit {unit.id}: {unit.title}</div>
+          <div className="header-logo">Unit {unit.id}</div>
           <div style={{ width: '80px' }}></div>
         </div>
       </div>

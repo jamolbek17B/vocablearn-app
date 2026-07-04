@@ -190,6 +190,71 @@
   margin-bottom: 0.5rem;
 }
 
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-greeting {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+  font-weight: 500;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.game-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.game-card:hover {
+  border-color: #667eea;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+}
+
+.game-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.game-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.game-description {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
 .game-modes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

@@ -80,7 +80,7 @@ export default function HomePage({ stats }: HomePageProps) {
           <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '8px', margin: '0 0 8px 0' }}>
             Keep it up, {stats.userName || 'Learner'}! 👋
           </h1>
-          <p style={{ fontSize: '0.95rem', color: '#64748b', margin: 0 }}>
+          <p style={{ fontSize: '20px', color: '#64748b', margin: 0 }}>
             {units.length} units • {units.reduce((sum, u) => sum + u.words.length, 0)} words • {TOTAL_EXERCISES * units.length} activities
           </p>
         </div>

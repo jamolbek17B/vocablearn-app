@@ -9,6 +9,21 @@ interface HomePageProps {
   setStats: (stats: UserStats) => void
 }
 
+/**
+ * TOTAL_EXERCISES represents the number of different game modes available per unit:
+ * 1. Flashcards - Flip cards to learn
+ * 2. Multiple Choice - Pick the right answer
+ * 3. Quiz - Type the translation
+ * 4. Reverse Quiz - Uzbek to English
+ * 5. Fill Blanks - Complete the sentence
+ * 6. Listening - Hear and translate
+ * 7. Match Pairs - Connect words
+ * 
+ * Total activities calculation:
+ * Activities = TOTAL_EXERCISES × units.length
+ * With 20 units: 7 × 20 = 140 activities
+ * This ensures users have diverse learning methods for each unit
+ */
 const TOTAL_EXERCISES = 7;
 
 export default function HomePage({ stats }: HomePageProps) {
@@ -65,14 +80,18 @@ export default function HomePage({ stats }: HomePageProps) {
           <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#0f172a', marginBottom: '8px', margin: '0 0 8px 0' }}>
             Keep it up, {stats.userName || 'Learner'}! 👋
           </h1>
-          <p style={{ fontSize: '0.95rem', color: '#64748b', margin: 0 }}>
+          <p style={{ fontSize: '20px', color: '#64748b', margin: 0 }}>
             {units.length} units • {units.reduce((sum, u) => sum + u.words.length, 0)} words • {TOTAL_EXERCISES * units.length} activities
           </p>
         </div>
 
         {/* Progress Section */}
         <div style={{ marginBottom: '40px' }}>
-          <ProgressSection stats={stats} totalActivities={TOTAL_EXERCISES * units.length} />
+          <ProgressSection 
+            stats={stats} 
+            totalActivities={TOTAL_EXERCISES * units.length}
+            allWords={units.flatMap(u => u.words)}
+          />
         </div>
 
         {/* Units Grid */}

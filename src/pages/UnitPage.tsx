@@ -71,12 +71,12 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
   return (
     <>
       <div className="header">
-        <div className="header-content">
-          <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem' }} onClick={() => navigate('/')}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', width: '100%' }}>
+          <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.9rem', flexShrink: 0 }} onClick={() => navigate('/')}>
             ← Back
           </button>
-          <div className="header-logo">Unit {unit.id}: {unit.title}</div>
-          <div style={{ width: '80px' }}></div>
+          <div className="header-logo" style={{ flex: 1, textAlign: 'center' }}>Unit {unit.id}</div>
+          <div style={{ width: '80px', flexShrink: 0 }}></div>
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function UnitPage({ unitId, stats }: UnitPageProps) {
           <h1 className="page-greeting">
             {unit.title}
           </h1>
-          <p className="page-subtitle">
+          <p style={{ fontSize: '0.95rem', color: '#475569', margin: '0', fontWeight: 500 }}>
             {unit.description} • {unit.words.length} words
           </p>
         </div>

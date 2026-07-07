@@ -266,3 +266,114 @@ export function markExerciseCompleted(unitId: number): void {
     console.error('Failed to mark exercise completed:', error);
   }
 }
+
+/**
+ * Get words that need spaced repetition review.
+ * Words are due for review if their nextReviewDate is today or earlier.
+ * This implements the SM-2 algorithm for optimal review scheduling.
+ */
+export function getWordsForSpacedRepetition(words: Array<{ english: string }>): Array<{ english: string }> {
+  const progress = getWordProgress();
+  const now = Date.now();
+  
+  return words.filter(word => {
+    const key = `${word.english}`;
+    const wordProgress = progress.get(key);
+    
+    // If word hasn't been studied yet, don't show it
+    if (!wordProgress) return false;
+    
+    // Show if next review date is today or earlier
+    return wordProgress.nextReviewDate <= now;
+  });
+}
+
+/**
+ * Get words that the user struggles with (weak words) with details.
+ * Words are considered weak if:
+ * - Quality rating is low (0-2 out of 5)
+ * - OR user has failed the word recently (quality < 3)
+ * These words need more practice.
+ */
+export function getWeakWords(words: Array<{ english: string; uzbek?: string }>): Array<{ english: string; uzbek?: string; quality: number; repetitions: number }> {
+  const progress = getWordProgress();
+  
+  return words
+    .map(word => {
+      const key = `${word.english}`;
+      const wordProgress = progress.get(key);
+      return { word, wordProgress };
+    })
+    .filter(({ wordProgress }) => {
+      // If word hasn't been studied, not weak yet
+      if (!wordProgress) return false;
+      
+      // Word is weak if quality is below passing threshold (< 3)
+      // or if it has been reviewed but has low mastery (quality < 3.5)
+      return wordProgress.quality < 3 || (wordProgress.repetitions > 0 && wordProgress.quality < 3.5);
+    })
+    .map(({ word, wordProgress }) => ({
+      english: word.english,
+      uzbek: word.uzbek,
+      quality: wordProgress?.quality || 0,
+      repetitions: wordProgress?.repetitions || 0
+    }));
+}
+
+/**
+ * Get words due for spaced repetition with details.
+ */
+export function getWordsForSpacedRepetitionDetails(words: Array<{ english: string; uzbek?: string }>): Array<{ english: string; uzbek?: string; nextReviewDate: number; daysUntilReview: number }> {
+  const progress = getWordProgress();
+  const now = Date.now();
+  
+  return words
+    .map(word => {
+      const key = `${word.english}`;
+      const wordProgress = progress.get(key);
+      return { word, wordProgress };
+    })
+    .filter(({ wordProgress }) => {
+      // If word hasn't been studied yet, don't show it
+      if (!wordProgress) return false;
+      
+      // Show if next review date is today or earlier
+      return wordProgress.nextReviewDate <= now;
+    })
+    .map(({ word, wordProgress }) => ({
+      english: word.english,
+      uzbek: word.uzbek,
+      nextReviewDate: wordProgress?.nextReviewDate || 0,
+      daysUntilReview: Math.ceil((wordProgress?.nextReviewDate || 0 - now) / (24 * 60 * 60 * 1000))
+    }))
+    .sort((a, b) => a.nextReviewDate - b.nextReviewDate);
+}
+
+/**
+ * Get last 7 days activity with actual streak data.
+ * Returns array of activity for each day, with true for active days and false for inactive.
+ */
+export function getLast7DaysActivity(): Array<{ day: string; active: boolean; date: string }> {
+  const sessions = getGameSessions();
+  const today = new Date();
+  
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() - (6 - i));
+    const dateStr = date.toISOString().split('T')[0];
+    
+    // Check if there are any sessions for this day
+    const hasActivity = sessions.some(session => {
+      const sessionDate = new Date(session.date).toISOString().split('T')[0];
+      return sessionDate === dateStr;
+    });
+    
+    const dayNames = ['Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th'];
+    
+    return {
+      day: dayNames[date.getDay()],
+      active: hasActivity,
+      date: dateStr
+    };
+  });
+}

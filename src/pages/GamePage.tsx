@@ -9,7 +9,8 @@ import {
   addXP,
   addGameSession,
   getXPForScore,
-  saveUserStats
+  saveUserStats,
+  markExerciseCompleted
 } from '../utils/storage'
 import type { UserStats, WordProgress } from '../utils/storage'
 import type { Word } from '../data/vocabulary'
@@ -59,6 +60,9 @@ export default function GamePage({
       xpEarned: earnedXP,
       date: Date.now()
     })
+
+    // Mark exercise as completed for this unit
+    markExerciseCompleted(unitId)
 
     setGameComplete(true)
   }

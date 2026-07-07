@@ -1,23 +1,37 @@
-import type { UserStats } from '../utils/storage';
+import { useState } from 'react';
+import type { UserStats, Word } from '../utils/storage';
+import { 
+  getLast7DaysActivity, 
+  getWordsForSpacedRepetition, 
+  getWeakWords,
+  getWordsForSpacedRepetitionDetails,
+  getGameSessions
+} from '../utils/storage';
 
 interface ProgressSectionProps {
   stats: UserStats;
   totalActivities: number;
+  allWords?: Array<{ english: string; uzbek?: string }>;
 }
 
-export default function ProgressSection({ stats, totalActivities }: ProgressSectionProps) {
-  const progressPercent = Math.min((stats.dailyXPEarned / stats.dailyGoal) * 100, 100);
+export default function ProgressSection({ stats, totalActivities, allWords = [] }: ProgressSectionProps) {
+  const [showWeakWords, setShowWeakWords] = useState(false);
+  const [showSpacedRep, setShowSpacedRep] = useState(false);
+  
+  // Calculate overall progress: how many exercises completed
+  const sessions = getGameSessions();
+  const completedActivities = sessions.length;
+  const overallProgressPercent = Math.min((completedActivities / totalActivities) * 100, 100);
+  
+  // Daily progress
+  const dailyProgressPercent = Math.min((stats.dailyXPEarned / stats.dailyGoal) * 100, 100);
 
-  // Generate last 7 days activity
-  const last7Days = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (6 - i));
-    return {
-      day: ['Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th'][date.getDay()],
-      date: date.toISOString().split('T')[0],
-      activity: Math.random() > 0.6 ? Math.floor(Math.random() * 100) : 0
-    };
-  });
+  // Get real last 7 days activity with actual streak tracking
+  const last7Days = getLast7DaysActivity();
+  
+  // Calculate weak words and spaced repetition words with details
+  const weakWordsDetail = getWeakWords(allWords);
+  const spacedRepWordsDetail = getWordsForSpacedRepetitionDetails(allWords);
 
   return (
     <div>
@@ -44,7 +58,7 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             Overall Progress
           </div>
           <div style={{ fontSize: '0.9rem', color: '#667eea', fontWeight: 700 }}>
-            {stats.dailyXPEarned} / {stats.dailyGoal} activities
+            {completedActivities} / {totalActivities} activities ({Math.round(overallProgressPercent)}%)
           </div>
         </div>
         <div
@@ -59,7 +73,7 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
             style={{
               height: '100%',
               background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
-              width: `${progressPercent}%`,
+              width: `${overallProgressPercent}%`,
               transition: 'width 0.4s ease'
             }}
           ></div>
@@ -123,14 +137,14 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
                   style={{
                     height: '100%',
                     background: 'rgba(255,255,255,1)',
-                    width: `${progressPercent}%`,
+                    width: `${dailyProgressPercent}%`,
                     transition: 'width 0.4s ease'
                   }}
                 ></div>
               </div>
             </div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, minWidth: '50px' }}>
-              {stats.dailyXPEarned} / {stats.dailyGoal}
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, minWidth: '70px', textAlign: 'right' }}>
+              {Math.round(dailyProgressPercent)}%
             </div>
           </div>
         </div>
@@ -155,11 +169,16 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
               <div
                 style={{
                   height: '48px',
-                  background: day.activity > 0 ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#e2e8f0',
+                  background: day.active 
+                    ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' 
+                    : '#e2e8f0',
                   borderRadius: '8px',
                   marginBottom: '8px',
-                  opacity: day.activity > 0 ? 1 : 0.5
+                  opacity: day.active ? 1 : 0.5,
+                  transition: 'all 0.3s ease',
+                  boxShadow: day.active ? '0 2px 8px rgba(16, 185, 129, 0.3)' : 'none'
                 }}
+                title={`${day.date}: ${day.active ? 'Active' : 'No activity'}`}
               ></div>
               <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
                 {day.day}
@@ -169,42 +188,180 @@ export default function ProgressSection({ stats, totalActivities }: ProgressSect
         </div>
       </div>
 
-      {/* Recommendations */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      {/* Recommendations - Equally spaced cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
         <div
+          onClick={() => spacedRepWordsDetail.length > 0 && setShowSpacedRep(true)}
           style={{
             background: 'white',
-            borderRadius: '16px',
+            borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '4px solid #667eea'
+            borderLeft: '2px solid #667eea',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '100px',
+            cursor: spacedRepWordsDetail.length > 0 ? 'pointer' : 'default',
+            transition: 'all 0.2s'
           }}
+          onMouseEnter={(e) => spacedRepWordsDetail.length > 0 && (e.currentTarget.style.boxShadow = '0 4px 16px rgba(102, 126, 234, 0.2)')}
+          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)')}
         >
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#667eea', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             📝 Spaced Repetition
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-            Review words due today
+            {spacedRepWordsDetail.length > 0 ? `${spacedRepWordsDetail.length} word${spacedRepWordsDetail.length !== 1 ? 's' : ''} due today` : 'All caught up!'}
           </div>
+          {spacedRepWordsDetail.length > 0 && <div style={{ fontSize: '0.75rem', color: '#999', marginTop: '8px' }}>Click to view</div>}
         </div>
 
         <div
+          onClick={() => weakWordsDetail.length > 0 && setShowWeakWords(true)}
           style={{
             background: 'white',
-            borderRadius: '16px',
+            borderRadius: '8px',
             padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            borderLeft: '4px solid #f59e0b'
+            borderLeft: '2px solid #f59e0b',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: '100px',
+            cursor: weakWordsDetail.length > 0 ? 'pointer' : 'default',
+            transition: 'all 0.2s'
           }}
+          onMouseEnter={(e) => weakWordsDetail.length > 0 && (e.currentTarget.style.boxShadow = '0 4px 16px rgba(245, 158, 11, 0.2)')}
+          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)')}
         >
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f59e0b', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             ⚠️ Weak Words
           </div>
           <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-            Practice your hardest words
+            {weakWordsDetail.length > 0 ? `${weakWordsDetail.length} word${weakWordsDetail.length !== 1 ? 's' : ''} need practice` : 'No weak words!'}
           </div>
+          {weakWordsDetail.length > 0 && <div style={{ fontSize: '0.75rem', color: '#999', marginTop: '8px' }}>Click to view</div>}
         </div>
       </div>
+
+      {/* Weak Words Detail Modal */}
+      {showWeakWords && (
+        <div style={{
+          background: 'white',
+          borderRadius: '12px',
+          padding: '24px',
+          marginBottom: '24px',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+          border: '2px solid #f59e0b'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#0f172a' }}>
+              ⚠️ Your Weak Words ({weakWordsDetail.length})
+            </h3>
+            <button 
+              onClick={() => setShowWeakWords(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#999'
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '16px', margin: '0 0 16px 0' }}>
+            These words have a quality score below 3 (failing). Practice them to improve your mastery.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+            {weakWordsDetail.map((word, idx) => (
+              <div key={idx} style={{
+                background: '#fff9e6',
+                border: '1px solid #f59e0b',
+                borderRadius: '8px',
+                padding: '12px',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>
+                  {word.english}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: '#667eea', marginBottom: '6px' }}>
+                  {word.uzbek}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 600 }}>
+                  Quality: {word.quality.toFixed(1)}/5
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Spaced Repetition Detail Modal */}
+      {showSpacedRep && (
+        <div style={{
+          background: 'white',
+          borderRadius: '12px',
+          padding: '24px',
+          marginBottom: '24px',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+          border: '2px solid #667eea'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#0f172a' }}>
+              📝 Spaced Repetition Review ({spacedRepWordsDetail.length})
+            </h3>
+            <button 
+              onClick={() => setShowSpacedRep(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#999'
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <div style={{ background: '#f0f4ff', borderRadius: '8px', padding: '12px', marginBottom: '16px' }}>
+            <p style={{ margin: 0, fontSize: '0.85rem', color: '#667eea', fontWeight: 600 }}>
+              How Spaced Repetition Works:
+            </p>
+            <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px', fontSize: '0.85rem', color: '#64748b' }}>
+              <li>First review: 1 day later</li>
+              <li>Second review: 3 days after first success</li>
+              <li>Then: Interval increases based on your performance (SM-2 Algorithm)</li>
+              <li>Lower scores restart the cycle; higher scores increase the interval</li>
+            </ul>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+            {spacedRepWordsDetail.map((word, idx) => (
+              <div key={idx} style={{
+                background: '#e6f7ff',
+                border: '1px solid #667eea',
+                borderRadius: '8px',
+                padding: '12px',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>
+                  {word.english}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: '#667eea', marginBottom: '6px' }}>
+                  {word.uzbek}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 600 }}>
+                  Due: {word.daysUntilReview <= 0 ? 'Today' : `${Math.abs(word.daysUntilReview)} days ago`}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

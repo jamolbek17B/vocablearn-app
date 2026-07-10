@@ -1,12 +1,14 @@
 import { units } from '../data/vocabulary'
-import { getWordProgress, getUnitCompletedExercises } from '../utils/storage'
+import { getWordProgress, getUnitCompletedExercises, logoutUser } from '../utils/storage'
 import type { UserStats } from '../utils/storage'
 import UnitCard from '../components/UnitCard'
 import ProgressSection from '../components/ProgressSection'
+import ProfileMenu from '../components/ProfileMenu'
 
 interface HomePageProps {
   stats: UserStats
   setStats: (stats: UserStats) => void
+  onLogout?: () => void
 }
 
 /**
@@ -26,7 +28,7 @@ interface HomePageProps {
  */
 const TOTAL_EXERCISES = 7;
 
-export default function HomePage({ stats }: HomePageProps) {
+export default function HomePage({ stats, onLogout }: HomePageProps) {
   const progress = getWordProgress()
 
   const getUnitProgress = (unitId: number) => {
@@ -57,20 +59,13 @@ export default function HomePage({ stats }: HomePageProps) {
           <div style={{ textAlign: 'center', color: 'white' }}>
             <div style={{ fontSize: '0.85rem', opacity: 0.9 }}>Welcome, {stats.userName || 'Learner'}!</div>
           </div>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontWeight: 700,
-            fontSize: '0.95rem'
-          }}>
-            {stats.userName?.charAt(0)?.toUpperCase() || 'L'}
-          </div>
+          <ProfileMenu 
+            stats={stats}
+            onLogout={() => {
+              logoutUser()
+              onLogout?.()
+            }}
+          />
         </div>
       </div>
 

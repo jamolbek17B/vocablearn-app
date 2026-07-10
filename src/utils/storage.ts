@@ -221,6 +221,21 @@ export function getUserName(): string | null {
   }
 }
 
+/**
+ * Logout user by clearing their name and user state
+ * Preserves other data like stats, progress, etc.
+ */
+export function logoutUser(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.USERNAME);
+    const stats = getUserStats();
+    stats.userName = '';
+    saveUserStats(stats);
+  } catch (error) {
+    console.error('Failed to logout:', error);
+  }
+}
+
 // Validate answer against word alternatives
 export function validateAnswer(userAnswer: string, correctAnswer: string, alternatives: string[]): boolean {
   const normalized = (str: string) => str.toLowerCase().trim();

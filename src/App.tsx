@@ -20,6 +20,19 @@ export default function App() {
     }
   }, [])
 
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    // Reset stats but keep it initialized
+    setStats({ 
+      userName: '',
+      totalXP: 0,
+      dailyXPEarned: 0,
+      dailyGoal: 100,
+      level: 1,
+      streak: 0
+    })
+  }
+
   if (!stats) {
     return <div className="loading">Loading VocabLearn...</div>
   }
@@ -39,7 +52,7 @@ export default function App() {
   return (
     <Router>
       <div className="app">
-        <Route path="/" component={() => <HomePage stats={stats} setStats={setStats} />} />
+        <Route path="/" component={() => <HomePage stats={stats} setStats={setStats} onLogout={handleLogout} />} />
         <Route path="/unit/:unitId" component={({ params }) => (
           <UnitPage unitId={parseInt(params.unitId)} stats={stats} setStats={setStats} />
         )} />

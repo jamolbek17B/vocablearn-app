@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Unit } from '../data/vocabulary'
-import { isAnswerCorrect } from '../utils/answerCheck'
+import { isAnswerCorrect, formatAnswers } from '../utils/answerCheck'
 
 interface QuizProps {
   unit: Unit
@@ -99,8 +99,14 @@ export default function Quiz({
           ) : (
             <>
               ✗ Incorrect. Your answer: "<strong>{userAnswer}</strong>"
-              <div style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
-                Correct answer: <strong>{currentWord.uzbek}</strong>
+              <div style={{ marginTop: '0.75rem', fontSize: '0.9rem', textAlign: 'left' }}>
+                <div>Accepted answers:</div>
+                <div style={{ marginTop: '0.25rem', fontWeight: 'bold', fontSize: '1rem' }}>
+                  {formatAnswers(currentWord)}
+                </div>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666', fontStyle: 'italic' }}>
+                  (You can use any of these - apostrophes and uppercase are flexible)
+                </div>
               </div>
             </>
           )}

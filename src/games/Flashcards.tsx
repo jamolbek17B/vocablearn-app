@@ -15,7 +15,26 @@ export default function Flashcards({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
   const [score, setScore] = useState(0)
+  const [touchStart, setTouchStart] = useState(0)
   const words = unit.words
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart) return
+    
+    const touchEnd = e.changedTouches[0].clientX
+    const distance = touchStart - touchEnd
+    
+    // Swipe left to flip, swipe right to unflip, tap to toggle
+    if (Math.abs(distance) < 50) {
+      // Tap: flip the card
+      setIsFlipped(!isFlipped)
+    }
+    setTouchStart(0)
+  }
 
   const currentWord = words[currentIndex]
 
@@ -65,10 +84,14 @@ export default function Flashcards({
 
         <div
           onClick={() => setIsFlipped(!isFlipped)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           style={{
             perspective: '1000px',
             cursor: 'pointer',
-            marginBottom: '40px'
+            marginBottom: '40px',
+            userSelect: 'none',
+            touchAction: 'manipulation'
           }}
         >
           <div

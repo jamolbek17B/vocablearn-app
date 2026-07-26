@@ -20,7 +20,7 @@ export const units: Unit[] = [
     words: [
       { english: "afraid", uzbek: "qo'rqmoq", answers: ["qo'rqqan", "cho'chmoq", "qo'rqib ketmoq"], sentence: "The woman was ___ of what she saw." },
       { english: "agree", uzbek: "rozi bo'lmoq", answers: ["kelishmoq", "rozilik bildirmoq", "qo'shilmoq"], sentence: "I ___ with you that the food is very good." },
-      { english: "angry", uzbek: "jahlda", answers: ["g'azablangan", "jahli chiqqan", "xafa"], sentence: "She didn't do her homework, so her father is ___." },
+      { english: "angry", uzbek: "xunuk", answers: ["g'azablangan", "jahli chiqqan", "xafa"], sentence: "She didn't do her homework, so her father is ___." },
       { english: "arrive", uzbek: "yetib kelmoq", answers: ["etib kelmoq", "kelmoq"], sentence: "The bus will ___ at the corner of my street at 4:00." },
       { english: "attack", uzbek: "hujum qilmoq", answers: ["hujum etmoq", "bostirib kirmoq", "hujum"], sentence: "It is wrong to ___ someone first." },
       { english: "bottom", uzbek: "tagi osti", answers: ["pastki qism", "tub", "past"], sentence: "The ___ of my shoe has a hole in it." },
@@ -170,6 +170,9 @@ export const units: Unit[] = [
       { english: "upset", uzbek: "xafa", answers: ["bezovta qilmoq", "ranj bermoq", "g'ussali"], sentence: "I was very ___ when I lost my keys." },
       { english: "weather", uzbek: "ob-havo", answers: ["iqlim", "tabiiy shart", "davom etmoq"], sentence: "What's the ___ like today?" },
       { english: "wise", uzbek: "dono", answers: ["aqlli", "to'g'ri hikmat", "oqilona"], sentence: "The ___ old man gave good advice." },
+      { english: "gentle", uzbek: "halim", answers: ["yumshoq", "mehhribonlik", "shafqat"], sentence: "She has a ___ way with animals." },
+      { english: "willing", uzbek: "tayyor", answers: ["rozaman", "ishonkli", "ixtiyori"], sentence: "Are you ___ to help us?" },
+      { english: "swift", uzbek: "tez", answers: ["shoshilinch", "sekin emas", "jaddu"], sentence: "The ___ runner won the race easily." },
     ],
   },
   {
